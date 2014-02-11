@@ -186,6 +186,11 @@ module Fitgem
     # The protocol to be used for the API requests
     # 
     # @return [String], 'http', or 'https' if ssl == true
+    
+    def get(path, headers={})
+      extract_response_body raw_get(path, headers)
+    end
+    
     def protocol
       ssl ? "https" : "http"
     end
@@ -203,9 +208,7 @@ module Fitgem
         @access_token ||= OAuth::AccessToken.new(consumer, @token, @secret)
       end
 
-      def get(path, headers={})
-        extract_response_body raw_get(path, headers)
-      end
+
 
       def raw_get(path, headers={})
         headers.merge!('User-Agent' => "fitgem gem v#{Fitgem::VERSION}", 'Accept-Language' => @api_unit_system)
